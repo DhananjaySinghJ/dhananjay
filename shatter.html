@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natural Text Shatter Effect</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            color: #FB923C;
+            font-family: monospace;
+            min-height: 300vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 800px;
+        }
+
+        .text {
+            font-size: 24px;
+            line-height: 1.5;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            will-change: transform;
+        }
+
+        .scroll-guide {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #FB923C;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="text" class="text">
+            I'm Dhananjay Singh, a Creative Developer with a passion for bringing ideas to life through design and technology...
+        </div>
+    </div>
+    <div class="scroll-guide">Scroll down to shatter text ↓</div>
+
+    <script>
+        const textElement = document.getElementById('text');
+        let isShattered = false;
+        let particles = [];
+        let animationId;
+        const LETTER_WIDTH = 14;
+        const LETTER_HEIGHT = 24;
+
+        function random(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function createParticles() {
+            const text = textElement.textContent;
+            const rect = textElement.getBoundingClientRect();
+            const chars = text.split('');
+            
+            particles.forEach(p => p.element.remove());
+            particles = [];
+
+            chars.forEach((char, index) => {
+                const element = document.createElement('span');
+                element.className = 'particle';
+                element.textContent = char;
+                element.style.fontSize = '24px';
+                element.style.color = '#FB923C';
+                
+                const x = rect.left + (index / chars.length) * rect.width;
+                const y = rect.top;
+
+                // More varied initial velocities
+                const upwardChance = Math.random();
+                const vy = upwardChance > 0.7 
+                    ? random(-20, -15) // 30% chance of shooting up high
+                    : upwardChance > 0.3
+                        ? random(-15, -8) // 40% chance of medium height
+                        : random(-8, -5);  // 30% chance of low height
+
+                document.body.appendChild(element);
+
+                particles.push({
+                    element,
+                    char,
+                    x,
+                    y,
+                    vx: random(-8, 8), // Horizontal spread
+                    vy,
+                    rotation: random(-360, 360),
+                    rotationSpeed: random(-5, 5),
+                    bounceEnergy: random(0.3, 0.6),
+                    friction: random(0.95, 0.98),
+                    settled: false,
+                    lastBounceTime: 0,
+                    bounceCount: 0
+                });
+            });
+
+            textElement.style.opacity = 0;
+        }
+
+        function updateParticles() {
+            const bottomBoundary = window.innerHeight - LETTER_HEIGHT;
+            const scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+            const currentTime = Date.now();
+
+            particles.forEach(particle => {
+                if (!particle.settled) {
+                    // Apply gravity
+                    particle.vy += 0.6;
+                    
+                    // Apply friction in air
+                    particle.vx *= 0.995;
+
+                    // Update position
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
+
+                    // Rotate
+                    particle.rotation += particle.rotationSpeed;
+                    particle.rotationSpeed *= 0.99; // Gradually slow rotation
+
+                    // Bottom boundary collision
+                    if (particle.y > bottomBoundary) {
+                        particle.y = bottomBoundary;
+                        
+                        // Only bounce if enough time has passed since last bounce
+                        if (currentTime - particle.lastBounceTime > 50) {
+                            particle.vy *= -particle.bounceEnergy;
+                            particle.vx *= particle.friction;
+                            particle.lastBounceTime = currentTime;
+                            particle.bounceCount++;
+
+                            // Gradually reduce bounce energy
+                            particle.bounceEnergy *= 0.9;
+
+                            // Random slight rotation on bounce
+                            particle.rotationSpeed = random(-3, 3);
+                        }
+
+                        // Check if particle should settle
+                        if (particle.bounceCount > 2 && Math.abs(particle.vy) < 2 && Math.abs(particle.vx) < 1) {
+                            particle.settled = true;
+                            particle.rotation = random(-10, 10); // Slight random final rotation
+                        }
+                    }
+
+                    // Wall collisions with bounce
+                    if (particle.x < 0) {
+                        particle.x = 0;
+                        particle.vx *= -0.5;
+                    } else if (particle.x > window.innerWidth - LETTER_WIDTH) {
+                        particle.x = window.innerWidth - LETTER_WIDTH;
+                        particle.vx *= -0.5;
+                    }
+                }
+
+                // Handle visibility based on scroll
+                if (scrollProgress > 0.8) {
+                    const fadeProgress = (scrollProgress - 0.8) / 0.2;
+                    particle.element.style.opacity = Math.max(0, 1 - fadeProgress);
+                } else if (scrollProgress < 0.2) {
+                    const fadeProgress = scrollProgress / 0.2;
+                    particle.element.style.opacity = fadeProgress;
+                } else {
+                    particle.element.style.opacity = 1;
+                }
+
+                // Apply updates to DOM
+                particle.element.style.transform = `translate(${particle.x}px, ${particle.y}px) rotate(${particle.rotation}deg)`;
+            });
+
+            // Continue animation
+            if (particles.some(p => !p.settled) || scrollProgress < 1) {
+                animationId = requestAnimationFrame(updateParticles);
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            const scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+            
+            if (!isShattered && scrollProgress > 0.2) {
+                isShattered = true;
+                createParticles();
+                updateParticles();
+            }
+
+            // Restore text if scrolled back to top
+            if (scrollProgress < 0.1) {
+                textElement.style.opacity = 1 - (scrollProgress / 0.1);
+            }
+        });
+
+        // Cleanup function
+        function cleanup() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            particles.forEach(p => p.element.remove());
+            particles = [];
+        }
+    </script>
+</body>
+</html>
