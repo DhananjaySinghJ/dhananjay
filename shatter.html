@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Natural Text Shatter Effect</title>
+    <title>Natural Text Shatter Effect with Matter.js</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -21,20 +22,7 @@
             transform: translate(-50%, -50%);
             width: 80%;
             max-width: 800px;
-        }
-
-        .text {
-            font-size: 24px;
-            line-height: 1.5;
-            opacity: 1;
-            transition: opacity 0.3s;
-        }
-
-        .particle {
-            position: fixed;
-            pointer-events: none;
-            transition: opacity 0.3s;
-            will-change: transform;
+            text-align: center;
         }
 
         .scroll-guide {
@@ -44,176 +32,129 @@
             transform: translateX(-50%);
             color: #FB923C;
         }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div id="text" class="text">
-            I'm Dhananjay Singh, a Creative Developer with a passion for bringing ideas to life through design and technology...
-        </div>
+        <div id="text">I'm Dhananjay Singh, a Creative Developer with a passion for bringing ideas to life through design and technology...</div>
     </div>
     <div class="scroll-guide">Scroll down to shatter text ↓</div>
-
     <script>
-        const textElement = document.getElementById('text');
-        let isShattered = false;
-        let particles = [];
-        let animationId;
-        const LETTER_WIDTH = 14;
-        const LETTER_HEIGHT = 24;
+        const { Engine, Render, World, Bodies, Body, Events } = Matter;
+let engine = Engine.create();
+let render = Render.create({
+    element: document.body,
+    engine: engine,
+    options: {
+        width: window.innerWidth,
+        height: window.innerHeight,
+        background: 'transparent',
+        wireframes: false,
+    }
+});
 
-        function random(min, max) {
-            return Math.random() * (max - min) + min;
-        }
+let textElement = document.getElementById('text');
+let isShattered = false;
+let particles = [];
+let originalPositions = [];
 
-        function createParticles() {
-            const text = textElement.textContent;
-            const rect = textElement.getBoundingClientRect();
-            const chars = text.split('');
-            
-            particles.forEach(p => p.element.remove());
-            particles = [];
+function createParticles() {
+    const text = textElement.textContent;
+    const rect = textElement.getBoundingClientRect();
+    textElement.style.opacity = 0;
 
-            chars.forEach((char, index) => {
-                const element = document.createElement('span');
-                element.className = 'particle';
-                element.textContent = char;
-                element.style.fontSize = '24px';
-                element.style.color = '#FB923C';
-                
-                const x = rect.left + (index / chars.length) * rect.width;
-                const y = rect.top;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.font = getComputedStyle(textElement).font;
 
-                // More varied initial velocities
-                const upwardChance = Math.random();
-                const vy = upwardChance > 0.7 
-                    ? random(-20, -15) // 30% chance of shooting up high
-                    : upwardChance > 0.3
-                        ? random(-15, -8) // 40% chance of medium height
-                        : random(-8, -5);  // 30% chance of low height
+    text.split('').forEach((char, index) => {
+        if (char.trim() === '') return;
 
-                document.body.appendChild(element);
+        const charWidth = ctx.measureText(char).width * 2;
+        const charHeight = parseInt(getComputedStyle(textElement).fontSize, 10) * 2;
+        let x = rect.left + ctx.measureText(text.substring(0, index)).width * 2;
+        let y = rect.top;
 
-                particles.push({
-                    element,
-                    char,
-                    x,
-                    y,
-                    vx: random(-8, 8), // Horizontal spread
-                    vy,
-                    rotation: random(-360, 360),
-                    rotationSpeed: random(-5, 5),
-                    bounceEnergy: random(0.3, 0.6),
-                    friction: random(0.95, 0.98),
-                    settled: false,
-                    lastBounceTime: 0,
-                    bounceCount: 0
-                });
-            });
-
-            textElement.style.opacity = 0;
-        }
-
-        function updateParticles() {
-            const bottomBoundary = window.innerHeight - LETTER_HEIGHT;
-            const scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-            const currentTime = Date.now();
-
-            particles.forEach(particle => {
-                if (!particle.settled) {
-                    // Apply gravity
-                    particle.vy += 0.6;
-                    
-                    // Apply friction in air
-                    particle.vx *= 0.995;
-
-                    // Update position
-                    particle.x += particle.vx;
-                    particle.y += particle.vy;
-
-                    // Rotate
-                    particle.rotation += particle.rotationSpeed;
-                    particle.rotationSpeed *= 0.99; // Gradually slow rotation
-
-                    // Bottom boundary collision
-                    if (particle.y > bottomBoundary) {
-                        particle.y = bottomBoundary;
-                        
-                        // Only bounce if enough time has passed since last bounce
-                        if (currentTime - particle.lastBounceTime > 50) {
-                            particle.vy *= -particle.bounceEnergy;
-                            particle.vx *= particle.friction;
-                            particle.lastBounceTime = currentTime;
-                            particle.bounceCount++;
-
-                            // Gradually reduce bounce energy
-                            particle.bounceEnergy *= 0.9;
-
-                            // Random slight rotation on bounce
-                            particle.rotationSpeed = random(-3, 3);
-                        }
-
-                        // Check if particle should settle
-                        if (particle.bounceCount > 2 && Math.abs(particle.vy) < 2 && Math.abs(particle.vx) < 1) {
-                            particle.settled = true;
-                            particle.rotation = random(-10, 10); // Slight random final rotation
-                        }
-                    }
-
-                    // Wall collisions with bounce
-                    if (particle.x < 0) {
-                        particle.x = 0;
-                        particle.vx *= -0.5;
-                    } else if (particle.x > window.innerWidth - LETTER_WIDTH) {
-                        particle.x = window.innerWidth - LETTER_WIDTH;
-                        particle.vx *= -0.5;
-                    }
+        let body = Bodies.rectangle(x, y, charWidth, charHeight, {
+            restitution: 0.6, 
+            friction: 0.1,
+            render: {
+                sprite: {
+                    texture: getLetterTexture(char, charWidth, charHeight),
+                    xScale: 1,
+                    yScale: 1
                 }
-
-                // Handle visibility based on scroll
-                if (scrollProgress > 0.8) {
-                    const fadeProgress = (scrollProgress - 0.8) / 0.2;
-                    particle.element.style.opacity = Math.max(0, 1 - fadeProgress);
-                } else if (scrollProgress < 0.2) {
-                    const fadeProgress = scrollProgress / 0.2;
-                    particle.element.style.opacity = fadeProgress;
-                } else {
-                    particle.element.style.opacity = 1;
-                }
-
-                // Apply updates to DOM
-                particle.element.style.transform = `translate(${particle.x}px, ${particle.y}px) rotate(${particle.rotation}deg)`;
-            });
-
-            // Continue animation
-            if (particles.some(p => !p.settled) || scrollProgress < 1) {
-                animationId = requestAnimationFrame(updateParticles);
-            }
-        }
-
-        window.addEventListener('scroll', () => {
-            const scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-            
-            if (!isShattered && scrollProgress > 0.2) {
-                isShattered = true;
-                createParticles();
-                updateParticles();
-            }
-
-            // Restore text if scrolled back to top
-            if (scrollProgress < 0.1) {
-                textElement.style.opacity = 1 - (scrollProgress / 0.1);
             }
         });
 
-        // Cleanup function
-        function cleanup() {
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-            }
-            particles.forEach(p => p.element.remove());
-            particles = [];
-        }
+        Body.setVelocity(body, { x: (Math.random() - 0.5) * 5, y: -Math.random() * 10 });
+        originalPositions.push({ body, x, y });
+        World.add(engine.world, body);
+        particles.push(body);
+    });
+}
+
+function getLetterTexture(char, width, height) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = width;
+    canvas.height = height;
+    ctx.font = `${height / 2}px monospace`;
+    ctx.fillStyle = '#FB923C';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(char, canvas.width / 2, canvas.height / 2);
+    return canvas.toDataURL();
+}
+
+window.addEventListener('scroll', () => {
+    const scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    
+    if (!isShattered && scrollProgress > 0.2) {
+        isShattered = true;
+        createParticles();
+        Engine.run(engine);
+        Render.run(render);
+    } else if (isShattered && scrollProgress < 0.2) {
+        isShattered = false;
+        reassembleText();
+    } else if (isShattered && scrollProgress > 0.6) {
+        fadeAwayParticles();
+    }
+});
+
+function reassembleText() {
+    particles.forEach((body, index) => {
+        const target = originalPositions[index];
+        Body.setVelocity(body, { x: 0, y: 0 });
+        Body.setPosition(body, { x: target.x, y: target.y });
+    });
+}
+
+function fadeAwayParticles() {
+    particles.forEach((body) => {
+        setTimeout(() => {
+            World.remove(engine.world, body);
+        }, Math.random() * 1000);
+    });
+}
+
+const ground = Bodies.rectangle(window.innerWidth / 2, window.innerHeight + 50, window.innerWidth, 100, {
+    isStatic: true,
+    render: { visible: false }
+});
+World.add(engine.world, ground);
+
+
     </script>
 </body>
 </html>
