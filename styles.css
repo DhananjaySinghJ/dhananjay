@@ -1,0 +1,62 @@
+        @font-face {
+            font-family: 'CustomFont';
+            src: url(./fonts/PPNeueMachina-Light.woff2) format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            margin: 0;
+            min-height: 300vh;
+            background: #000;
+            color: #EB4330;
+            font-family: 'CustomFont', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        .text-container {
+            font-family: 'CustomFont', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.4;
+            opacity: 0;
+            transition: opacity 1s ease-in;
+            white-space: pre-wrap;
+        }
+
+        .scroll-guide {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #EB4330;
+            font-size: 1rem;
+            z-index: 2;
+        }
+
+        .char-wrapper {
+            display: inline-block;
+            transform: translate3d(0, 0, 0);
+            transition: color 0.3s ease;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+ 
