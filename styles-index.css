@@ -7,21 +7,10 @@
 
 body {
     background: black;
-    font-family: Arial, sans-serif;
+    font-family: 'CustomFont', sans-serif;
     text-align: center;
     margin: 0;
     padding: 0;
-}
-
-.scroll-text {
-    font-size: 3rem;
-    font-weight: bold;
-    opacity: 0; /* Initially hidden */
-    transition: opacity 0.5s ease-in-out;
-}
-
-.spacer {
-    height: 150vh; /* Creates scrollable space */
 }
 
 .hero_letters {

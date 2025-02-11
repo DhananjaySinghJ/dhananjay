@@ -14,28 +14,32 @@ requestAnimationFrame(raf);
 // Initialize GSAP ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
-gsap.fromTo(
-    ".scroll-text",
-    { opacity: 0, y: 50 }, // Start hidden & lower
-    {
-        opacity: 1,
-        y: 0,
-        scrollTrigger: {
-            trigger: ".scroll-text",
-            start: "top 80%",
-            end: "top 40%",
-            scrub: true,
-        },
-    }
-);
+// Animate each letter with a slight delay
+gsap.from('.letter-container', {
+  opacity: 0,
+  y: 100,
+  rotateX: -90,
+  stagger: 0.1,
+  duration: 1,
+  delay: 3,
+  ease: 'power3.out'
+});
 
-gsap.to(".scroll-text", {
-    opacity: 0,
-    y: -50, // Moves up while fading out
-    scrollTrigger: {
-        trigger: ".scroll-text",
-        start: "top 40%",
-        end: "top 10%",
-        scrub: true,
-    },
+// Add hover effect
+document.querySelectorAll('.letter-container').forEach(letter => {
+  letter.addEventListener('mouseenter', () => {
+    gsap.to(letter, {
+      rotateY: 180,
+      duration: 0.5,
+      ease: 'power2.inOut'
+    });
+  });
+  
+  letter.addEventListener('mouseleave', () => {
+    gsap.to(letter, {
+      rotateY: 0,
+      duration: 0.5,
+      ease: 'power2.inOut'
+    });
+  });
 });
