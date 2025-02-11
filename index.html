@@ -1,113 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
-<style>
-.hero_letters {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1vw;
-  padding: 20px;
-  background: #fff;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.letter-container {
-  position: relative;
-  flex: 1;
-  height: min(30vh, 200px);
-  /* Maintain aspect ratio based on original viewBox dimensions */
-  max-width: calc(min(30vh, 200px) * 0.75);
-}
-
-.letter-container svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  /* Preserve aspect ratio while filling container */
-  object-fit: contain;
-}
-
-.hero_letter-path {
-  stroke-width: 2px;
-  vector-effect: non-scaling-stroke; /* Maintain consistent stroke width when scaling */
-}
-
-.hero_letter-path.shadow {
-  stroke: #932b1f;
-  /* Make offset responsive to viewport size */
-  transform: translate(0.5vw, 0.5vw);
-  opacity: 0.7;
-}
-
-.hero_letter-path.front {
-  stroke: #EB4330;
-  filter: drop-shadow(0 0 1px rgba(235, 67, 48, 0.3));
-}
-
-@keyframes drawLetter {
-  from {
-    stroke-dashoffset: 1000;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-.hero_letters svg path {
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
-  fill: none;
-}
-
-.hero_letter-path.shadow { animation: drawLetter 2s forwards; }
-.hero_letter-path.front { animation: drawLetter 2s forwards 0.1s; }
-
-.hero_letters .letter-container:nth-child(2) svg path.shadow { animation-delay: 0.2s; }
-.hero_letters .letter-container:nth-child(2) svg path.front { animation-delay: 0.3s; }
-.hero_letters .letter-container:nth-child(3) svg path.shadow { animation-delay: 0.4s; }
-.hero_letters .letter-container:nth-child(3) svg path.front { animation-delay: 0.5s; }
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .hero_letters {
-    gap: 2vw;
-    padding: 10px;
-  }
-  
-  .letter-container {
-    height: min(25vh, 150px);
-    max-width: calc(min(25vh, 150px) * 0.75);
-  }
-  
-  .hero_letter-path.shadow {
-    transform: translate(0.8vw, 0.8vw);
-  }
-}
-
-@media (max-width: 480px) {
-  .hero_letters {
-    gap: 3vw;
-    padding: 5px;
-  }
-  
-  .letter-container {
-    height: min(20vh, 100px);
-    max-width: calc(min(20vh, 100px) * 0.75);
-  }
-  
-  .hero_letter-path.shadow {
-    transform: translate(1vw, 1vw);
-  }
-}
-</style>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Website</title>
+    <link rel="stylesheet" href="./styles-index.css">
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.27/bundled/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
+
 <body>
 <div class="hero_letters">
   <!-- Letter D -->
@@ -182,5 +83,12 @@
     </svg>
   </div>
 </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.26"></script>
+    <script src="script.js"></script>
+
 </body>
 </html>
