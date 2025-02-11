@@ -6,7 +6,7 @@
                 });
                 
                 this.world = this.engine.world;
-                this.world.gravity.y = 0.5;
+                this.world.gravity.y = 1;
 
                 this.render = Matter.Render.create({
                     element: document.body,

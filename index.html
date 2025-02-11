@@ -5,26 +5,23 @@
 .hero_letters {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 1vw;
   padding: 20px;
   background: #fff;
-  color: #EB4330;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-}
-
-.hero_letter-path {
-  stroke-width: 1px;
-  --letter-start-color: #EB4330;
-  --letter-end-color: #EB4330;
+  box-sizing: border-box;
 }
 
 .letter-container {
   position: relative;
-  width: 60px;
-  height: 120px;
+  flex: 1;
+  height: min(30vh, 200px);
+  /* Maintain aspect ratio based on original viewBox dimensions */
+  max-width: calc(min(30vh, 200px) * 0.75);
 }
 
 .letter-container svg {
@@ -33,6 +30,25 @@
   left: 0;
   width: 100%;
   height: 100%;
+  /* Preserve aspect ratio while filling container */
+  object-fit: contain;
+}
+
+.hero_letter-path {
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke; /* Maintain consistent stroke width when scaling */
+}
+
+.hero_letter-path.shadow {
+  stroke: #932b1f;
+  /* Make offset responsive to viewport size */
+  transform: translate(0.5vw, 0.5vw);
+  opacity: 0.7;
+}
+
+.hero_letter-path.front {
+  stroke: #EB4330;
+  filter: drop-shadow(0 0 1px rgba(235, 67, 48, 0.3));
 }
 
 @keyframes drawLetter {
@@ -47,148 +63,124 @@
 .hero_letters svg path {
   stroke-dasharray: 1000;
   stroke-dashoffset: 1000;
-  animation: drawLetter 2s forwards;
+  fill: none;
 }
 
-.hero_letters .letter-container:nth-child(2) svg path { animation-delay: 0.1s; }
-.hero_letters .letter-container:nth-child(3) svg path { animation-delay: 0.2s; }
-.hero_letters .letter-container:nth-child(4) svg path { animation-delay: 0.3s; }
-.hero_letters .letter-container:nth-child(5) svg path { animation-delay: 0.4s; }
-.hero_letters .letter-container:nth-child(6) svg path { animation-delay: 0.5s; }
-.hero_letters .letter-container:nth-child(7) svg path { animation-delay: 0.6s; }
-.hero_letters .letter-container:nth-child(8) svg path { animation-delay: 0.7s; }
-.hero_letters .letter-container:nth-child(9) svg path { animation-delay: 0.8s; }
+.hero_letter-path.shadow { animation: drawLetter 2s forwards; }
+.hero_letter-path.front { animation: drawLetter 2s forwards 0.1s; }
+
+.hero_letters .letter-container:nth-child(2) svg path.shadow { animation-delay: 0.2s; }
+.hero_letters .letter-container:nth-child(2) svg path.front { animation-delay: 0.3s; }
+.hero_letters .letter-container:nth-child(3) svg path.shadow { animation-delay: 0.4s; }
+.hero_letters .letter-container:nth-child(3) svg path.front { animation-delay: 0.5s; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero_letters {
+    gap: 2vw;
+    padding: 10px;
+  }
+  
+  .letter-container {
+    height: min(25vh, 150px);
+    max-width: calc(min(25vh, 150px) * 0.75);
+  }
+  
+  .hero_letter-path.shadow {
+    transform: translate(0.8vw, 0.8vw);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero_letters {
+    gap: 3vw;
+    padding: 5px;
+  }
+  
+  .letter-container {
+    height: min(20vh, 100px);
+    max-width: calc(min(20vh, 100px) * 0.75);
+  }
+  
+  .hero_letter-path.shadow {
+    transform: translate(1vw, 1vw);
+  }
+}
 </style>
 </head>
 <body>
 <div class="hero_letters">
   <!-- Letter D -->
-  <div class="letter-container" data-letter="d">
+  <div class="letter-container">
     <svg viewBox="0 0 242 319" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="hero_letter-path" d="M181.44 1.40784H240.632V314.039H181.44V276.524C176.16 289.307 166.712 299.45 153.095 306.953C139.756 314.456 124.055 318.208 105.992 318.208C84.5937 318.208 65.8358 313.206 49.7179 303.202C33.8779 292.919 21.6505 279.164 13.0358 261.934C4.69894 244.427 0.530518 225.252 0.530518 204.41C0.530518 182.734 4.83789 163.42 13.4526 146.469C22.3453 129.239 34.9895 115.762 51.3853 106.035C67.781 96.3089 86.9558 91.4457 108.909 91.4457C123.36 91.4457 137.116 94.6415 150.177 101.033C163.238 107.425 173.659 116.456 181.44 128.128V1.40784Z" stroke="url(#paint0_linear_d)" />
-      <defs>
-        <linearGradient id="paint0_linear_d" x1="120.581" y1="1.40784" x2="120.581" y2="318.208" gradientUnits="userSpaceOnUse">
-          <stop stop-color="var(--letter-start-color)" />
-          <stop offset="1" stop-color="var(--letter-end-color)" />
-        </linearGradient>
-      </defs>
+      <path class="hero_letter-path shadow" d="M181.44 1.40784H240.632V314.039H181.44V276.524C176.16 289.307 166.712 299.45 153.095 306.953C139.756 314.456 124.055 318.208 105.992 318.208C84.5937 318.208 65.8358 313.206 49.7179 303.202C33.8779 292.919 21.6505 279.164 13.0358 261.934C4.69894 244.427 0.530518 225.252 0.530518 204.41C0.530518 182.734 4.83789 163.42 13.4526 146.469C22.3453 129.239 34.9895 115.762 51.3853 106.035C67.781 96.3089 86.9558 91.4457 108.909 91.4457C123.36 91.4457 137.116 94.6415 150.177 101.033C163.238 107.425 173.659 116.456 181.44 128.128V1.40784Z"/>
+      <path class="hero_letter-path front" d="M181.44 1.40784H240.632V314.039H181.44V276.524C176.16 289.307 166.712 299.45 153.095 306.953C139.756 314.456 124.055 318.208 105.992 318.208C84.5937 318.208 65.8358 313.206 49.7179 303.202C33.8779 292.919 21.6505 279.164 13.0358 261.934C4.69894 244.427 0.530518 225.252 0.530518 204.41C0.530518 182.734 4.83789 163.42 13.4526 146.469C22.3453 129.239 34.9895 115.762 51.3853 106.035C67.781 96.3089 86.9558 91.4457 108.909 91.4457C123.36 91.4457 137.116 94.6415 150.177 101.033C163.238 107.425 173.659 116.456 181.44 128.128V1.40784Z"/>
     </svg>
   </div>
-  
+
   <!-- Letter H -->
-  <div class="letter-container" data-letter="h">
+  <div class="letter-container">
     <svg viewBox="0 0 216 224" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="hero_letter-path" d="M59.6586 0.796V89.7678C65.2165 80.8751 73.2754 73.7857 83.8359 68.5052C94.3963 63.2246 106.346 60.5844 119.685 60.5844C146.919 60.5844 167.484 69.3389 181.379 86.8478C195.274 104.078 202.222 128.115 202.222 158.958V222.804H143.197V165.904C143.197 150.899 140.279 139.645 134.443 132.139C128.886 124.636 120.519 120.884 109.403 120.884C97.1757 120.884 87.3105 125.192 79.8073 133.807C72.5821 142.144 68.9694 154.511 68.9694 170.909V222.804H9.94408V0.796H59.6586Z" stroke="url(#paint0_linear_h)" />
-      <defs>
-        <linearGradient id="paint0_linear_h" x1="106.083" y1="0.796" x2="106.083" y2="222.804" gradientUnits="userSpaceOnUse">
-          <stop stop-color="var(--letter-start-color)" />
-          <stop offset="1" stop-color="var(--letter-end-color)" />
-        </linearGradient>
-      </defs>
+      <path class="hero_letter-path shadow" d="M59.6586 0.796V89.7678C65.2165 80.8751 73.2754 73.7857 83.8359 68.5052C94.3963 63.2246 106.346 60.5844 119.685 60.5844C146.919 60.5844 167.484 69.3389 181.379 86.8478C195.274 104.078 202.222 128.115 202.222 158.958V222.804H143.197V165.904C143.197 150.899 140.279 139.645 134.443 132.139C128.886 124.636 120.519 120.884 109.403 120.884C97.1757 120.884 87.3105 125.192 79.8073 133.807C72.5821 142.144 68.9694 154.511 68.9694 170.909V222.804H9.94408V0.796H59.6586Z"/>
+      <path class="hero_letter-path front" d="M59.6586 0.796V89.7678C65.2165 80.8751 73.2754 73.7857 83.8359 68.5052C94.3963 63.2246 106.346 60.5844 119.685 60.5844C146.919 60.5844 167.484 69.3389 181.379 86.8478C195.274 104.078 202.222 128.115 202.222 158.958V222.804H143.197V165.904C143.197 150.899 140.279 139.645 134.443 132.139C128.886 124.636 120.519 120.884 109.403 120.884C97.1757 120.884 87.3105 125.192 79.8073 133.807C72.5821 142.144 68.9694 154.511 68.9694 170.909V222.804H9.94408V0.796H59.6586Z"/>
     </svg>
   </div>
 
   <!-- Letter A -->
-  <div class="letter-container" data-letter="a">
+  <div class="letter-container">
     <svg viewBox="0 0 232 219" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="hero_letter-path" d="M99.6176 108.796C92.9659 130.691 80.7804 167.114 63.0584 218.071L1.19724 218.071L84.1832 1.0625L143.527 1.06249L231.077 218.071L167.975 218.071C148.865 165.445 135.707 128.184 128.499 106.284C121.276 84.3361 116.42 67.2673 113.925 55.0686L112.941 55.0898C110.723 68.9526 106.284 86.8525 99.6176 108.796Z" stroke="url(#paint0_linear_a)" />
-      <defs>
-        <linearGradient id="paint0_linear_a" x1="116.144" y1="218.571" x2="116.144" y2="0.562495" gradientUnits="userSpaceOnUse">
-          <stop stop-color="var(--letter-start-color)" />
-          <stop offset="1" stop-color="var(--letter-end-color)" />
-        </linearGradient>
-      </defs>
+      <path class="hero_letter-path shadow" d="M99.6176 108.796C92.9659 130.691 80.7804 167.114 63.0584 218.071L1.19724 218.071L84.1832 1.0625L143.527 1.06249L231.077 218.071L167.975 218.071C148.865 165.445 135.707 128.184 128.499 106.284C121.276 84.3361 116.42 67.2673 113.925 55.0686L112.941 55.0898C110.723 68.9526 106.284 86.8525 99.6176 108.796Z"/>
+      <path class="hero_letter-path front" d="M99.6176 108.796C92.9659 130.691 80.7804 167.114 63.0584 218.071L1.19724 218.071L84.1832 1.0625L143.527 1.06249L231.077 218.071L167.975 218.071C148.865 165.445 135.707 128.184 128.499 106.284C121.276 84.3361 116.42 67.2673 113.925 55.0686L112.941 55.0898C110.723 68.9526 106.284 86.8525 99.6176 108.796Z"/>
     </svg>
   </div>
 
   <!-- Letter N -->
-  <div class="letter-container" data-letter="n">
+  <div class="letter-container">
     <svg viewBox="0 0 216 224" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="hero_letter-path" d="M170.808 11.5753C184.054 18.1986 194.683 28.6825 202.699 43.0553C210.706 57.1362 214.724 74.83 214.724 96.1676V222.804H155.699V105.338C155.699 85.834 151.244 71.9055 142.202 63.7059C133.484 55.2719 122.379 51.0654 108.929 51.0654C93.8085 51.0654 81.7187 55.8306 72.7166 65.3954C63.9822 74.9749 59.6586 89.0103 59.6586 107.422V222.804H0.633301V5.79597H49.78L58.8451 36.6999L59.7505 36.8215C74.3786 13.0853 96.8567 1.21069 127.27 1.21069C143.034 1.21069 157.544 4.66697 170.808 11.5753Z" stroke="url(#paint0_linear_n)" />
-      <defs>
-        <linearGradient id="paint0_linear_n" x1="107.679" y1="0.710693" x2="107.679" y2="223.304" gradientUnits="userSpaceOnUse">
-          <stop stop-color="var(--letter-start-color)" />
-          <stop offset="1" stop-color="var(--letter-end-color)" />
-        </linearGradient>
-      </defs>
+      <path class="hero_letter-path shadow" d="M170.808 11.5753C184.054 18.1986 194.683 28.6825 202.699 43.0553C210.706 57.1362 214.724 74.83 214.724 96.1676V222.804H155.699V105.338C155.699 85.834 151.244 71.9055 142.202 63.7059C133.484 55.2719 122.379 51.0654 108.929 51.0654C93.8085 51.0654 81.7187 55.8306 72.7166 65.3954C63.9822 74.9749 59.6586 89.0103 59.6586 107.422V222.804H0.633301V5.79597H49.78L58.8451 36.6999L59.7505 36.8215C74.3786 13.0853 96.8567 1.21069 127.27 1.21069C143.034 1.21069 157.544 4.66697 170.808 11.5753Z"/>
+      <path class="hero_letter-path front" d="M170.808 11.5753C184.054 18.1986 194.683 28.6825 202.699 43.0553C210.706 57.1362 214.724 74.83 214.724 96.1676V222.804H155.699V105.338C155.699 85.834 151.244 71.9055 142.202 63.7059C133.484 55.2719 122.379 51.0654 108.929 51.0654C93.8085 51.0654 81.7187 55.8306 72.7166 65.3954C63.9822 74.9749 59.6586 89.0103 59.6586 107.422V222.804H0.633301V5.79597H49.78L58.8451 36.6999L59.7505 36.8215C74.3786 13.0853 96.8567 1.21069 127.27 1.21069C143.034 1.21069 157.544 4.66697 170.808 11.5753Z"/>
     </svg>
   </div>
 
   <!-- Letter A -->
-  <div class="letter-container" data-letter="a">
+  <div class="letter-container">
     <svg viewBox="0 0 232 219" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="hero_letter-path" d="M99.6176 108.796C92.9659 130.691 80.7804 167.114 63.0584 218.071L1.19724 218.071L84.1832 1.0625L143.527 1.06249L231.077 218.071L167.975 218.071C148.865 165.445 135.707 128.184 128.499 106.284C121.276 84.3361 116.42 67.2673 113.925 55.0686L112.941 55.0898C110.723 68.9526 106.284 86.8525 99.6176 108.796Z" stroke="url(#paint0_linear_a2)" />
-      <defs>
-        <linearGradient id="paint0_linear_a2" x1="116.144" y1="218.571" x2="116.144" y2="0.562495" gradientUnits="userSpaceOnUse">
-          <stop stop-color="var(--letter-start-color)" />
-          <stop offset="1" stop-color="var(--letter-end-color)" />
-        </linearGradient>
-      </defs>
+      <path class="hero_letter-path shadow" d="M99.6176 108.796C92.9659 130.691 80.7804 167.114 63.0584 218.071L1.19724 218.071L84.1832 1.0625L143.527 1.06249L231.077 218.071L167.975 218.071C148.865 165.445 135.707 128.184 128.499 106.284C121.276 84.3361 116.42 67.2673 113.925 55.0686L112.941 55.0898C110.723 68.9526 106.284 86.8525 99.6176 108.796Z"/>
+      <path class="hero_letter-path front" d="M99.6176 108.796C92.9659 130.691 80.7804 167.114 63.0584 218.071L1.19724 218.071L84.1832 1.0625L143.527 1.06249L231.077 218.071L167.975 218.071C148.865 165.445 135.707 128.184 128.499 106.284C121.276 84.3361 116.42 67.2673 113.925 55.0686L112.941 55.0898C110.723 68.9526 106.284 86.8525 99.6176 108.796Z"/>
     </svg>
   </div>
 
   <!-- Letter N -->
-  <div class="letter-container" data-letter="n">
+  <div class="letter-container">
     <svg viewBox="0 0 216 224" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="hero_letter-path" d="M170.808 11.5753C184.054 18.1986 194.683 28.6825 202.699 43.0553C210.706 57.1362 214.724 74.83 214.724 96.1676V222.804H155.699V105.338C155.699 85.834 151.244 71.9055 142.202 63.7059C133.484 55.2719 122.379 51.0654 108.929 51.0654C93.8085 51.0654 81.7187 55.8306 72.7166 65.3954C63.9822 74.9749 59.6586 89.0103 59.6586 107.422V222.804H0.633301V5.79597H49.78L58.8451 36.6999L59.7505 36.8215C74.3786 13.0853 96.8567 1.21069 127.27 1.21069C143.034 1.21069 157.544 4.66697 170.808 11.5753Z" stroke="url(#paint0_linear_n2)" />
-      <defs>
-        <linearGradient id="paint0_linear_n2" x1="107.679" y1="0.710693" x2="107.679" y2="223.304" gradientUnits="userSpaceOnUse">
-          <stop stop-color="var(--letter-start-color)" />
-          <stop offset="1" stop-color="var(--letter-end-color)" />
-        </linearGradient>
-      </defs>
+      <path class="hero_letter-path shadow" d="M170.808 11.5753C184.054 18.1986 194.683 28.6825 202.699 43.0553C210.706 57.1362 214.724 74.83 214.724 96.1676V222.804H155.699V105.338C155.699 85.834 151.244 71.9055 142.202 63.7059C133.484 55.2719 122.379 51.0654 108.929 51.0654C93.8085 51.0654 81.7187 55.8306 72.7166 65.3954C63.9822 74.9749 59.6586 89.0103 59.6586 107.422V222.804H0.633301V5.79597H49.78L58.8451 36.6999L59.7505 36.8215C74.3786 13.0853 96.8567 1.21069 127.27 1.21069C143.034 1.21069 157.544 4.66697 170.808 11.5753Z"/>
+      <path class="hero_letter-path front" d="M170.808 11.5753C184.054 18.1986 194.683 28.6825 202.699 43.0553C210.706 57.1362 214.724 74.83 214.724 96.1676V222.804H155.699V105.338C155.699 85.834 151.244 71.9055 142.202 63.7059C133.484 55.2719 122.379 51.0654 108.929 51.0654C93.8085 51.0654 81.7187 55.8306 72.7166 65.3954C63.9822 74.9749 59.6586 89.0103 59.6586 107.422V222.804H0.633301V5.79597H49.78L58.8451 36.6999L59.7505 36.8215C74.3786 13.0853 96.8567 1.21069 127.27 1.21069C143.034 1.21069 157.544 4.66697 170.808 11.5753Z"/>
     </svg>
   </div>
 
   <!-- Letter J -->
-  <div class="letter-container" data-letter="j">
+  <div class="letter-container">
     <svg viewBox="0 0 124 319" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="hero_letter-path" d="M123.176 0.672852V213.054C123.176 239.732 115.95 260.573 101.5 275.577C87.0495 290.582 66.7958 298.085 40.7389 298.085C29.3452 298.085 18.7847 296.556 9.02099 293.499C-0.742715 290.442 -9.3575 285.856 -16.8607 279.742L4.57888 239.732C8.74731 243.345 13.472 246.124 18.7526 248.07C24.0331 250.015 29.7315 250.988 35.8452 250.988C46.6831 250.988 54.8815 247.931 60.4394 241.816C66.2752 235.98 69.1931 227.365 69.1931 215.972V0.672852H123.176Z" stroke="url(#paint0_linear_j)" />
-      <defs>
-        <linearGradient id="paint0_linear_j" x1="53.1577" y1="0.672852" x2="53.1577" y2="298.085" gradientUnits="userSpaceOnUse">
-          <stop stop-color="var(--letter-start-color)" />
-          <stop offset="1" stop-color="var(--letter-end-color)" />
-        </linearGradient>
-      </defs>
+      <path class="hero_letter-path shadow" d="M123.176 0.672852V213.054C123.176 239.732 115.95 260.573 101.5 275.577C87.0495 290.582 66.7958 298.085 40.7389 298.085C29.3452 298.085 18.7847 296.556 9.02099 293.499C-0.742715 290.442 -9.3575 285.856 -16.8607 279.742L4.57888 239.732C8.74731 243.345 13.472 246.124 18.7526 248.07C24.0331 250.015 29.7315 250.988 35.8452 250.988C46.6831 250.988 54.8815 247.931 60.4394 241.816C66.2752 235.98 69.1931 227.365 69.1931 215.972V0.672852H123.176Z"/>
+      <path class="hero_letter-path front" d="M123.176 0.672852V213.054C123.176 239.732 115.95 260.573 101.5 275.577C87.0495 290.582 66.7958 298.085 40.7389 298.085C29.3452 298.085 18.7847 296.556 9.02099 293.499C-0.742715 290.442 -9.3575 285.856 -16.8607 279.742L4.57888 239.732C8.74731 243.345 13.472 246.124 18.7526 248.07C24.0331 250.015 29.7315 250.988 35.8452 250.988C46.6831 250.988 54.8815 247.931 60.4394 241.816C66.2752 235.98 69.1931 227.365 69.1931 215.972V0.672852H123.176Z"/>
     </svg>
   </div>
 
   <!-- Letter A -->
-<div class="letter-container" data-letter="a">
-  <svg viewBox="0 0 232 219" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- First path -->
-    <path class="hero_letter-path" d="M99.6176 108.796C92.9659 130.691 80.7804 167.114 63.0584 218.071L1.19724 218.071L84.1832 1.0625L143.527 1.06249L231.077 218.071L167.975 218.071C148.865 165.445 135.707 128.184 128.499 106.284C121.276 84.3361 116.42 67.2673 113.925 55.0686L112.941 55.0898C110.723 68.9526 106.284 86.8525 99.6176 108.796Z" stroke="url(#paint0_linear_a3)" />
-    <!-- Second identical path -->
-    <path class="hero_letter-path" d="M99.6176 108.796C92.9659 130.691 80.7804 167.114 63.0584 218.071L1.19724 218.071L84.1832 1.0625L143.527 1.06249L231.077 218.071L167.975 218.071C148.865 165.445 135.707 128.184 128.499 106.284C121.276 84.3361 116.42 67.2673 113.925 55.0686L112.941 55.0898C110.723 68.9526 106.284 86.8525 99.6176 108.796Z" stroke="url(#paint1_linear_a3)" />
-    <defs>
-      <linearGradient id="paint0_linear_a3" x1="116.144" y1="218.571" x2="116.144" y2="0.562495" gradientUnits="userSpaceOnUse">
-        <stop stop-color="var(--letter-start-color)" />
-        <stop offset="1" stop-color="var(--letter-end-color)" />
-      </linearGradient>
-      <linearGradient id="paint1_linear_a3" x1="116.144" y1="218.571" x2="116.144" y2="0.562495" gradientUnits="userSpaceOnUse">
-        <stop stop-color="var(--letter-start-color)" />
-        <stop offset="1" stop-color="var(--letter-end-color)" />
-      </linearGradient>
-    </defs>
-  </svg>
-</div>
+  <div class="letter-container">
+    <svg viewBox="0 0 232 219" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="hero_letter-path shadow" d="M99.6176 108.796C92.9659 130.691 80.7804 167.114 63.0584 218.071L1.19724 218.071L84.1832 1.0625L143.527 1.06249L231.077 218.071L167.975 218.071C148.865 165.445 135.707 128.184 128.499 106.284C121.276 84.3361 116.42 67.2673 113.925 55.0686L112.941 55.0898C110.723 68.9526 106.284 86.8525 99.6176 108.796Z"/>
+      <path class="hero_letter-path front" d="M99.6176 108.796C92.9659 130.691 80.7804 167.114 63.0584 218.071L1.19724 218.071L84.1832 1.0625L143.527 1.06249L231.077 218.071L167.975 218.071C148.865 165.445 135.707 128.184 128.499 106.284C121.276 84.3361 116.42 67.2673 113.925 55.0686L112.941 55.0898C110.723 68.9526 106.284 86.8525 99.6176 108.796Z"/>
+    </svg>
+  </div>
 
-<!-- Letter Y -->
-<div class="letter-container" data-letter="y">
-  <svg viewBox="0 0 240 319" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!-- First path -->
-    <path class="hero_letter-path" d="M103.176 0L169.176 125.5V318.5H115.176V125.5L49.1763 0H103.176ZM239.176 0L173.176 125.5V318.5H119.176V125.5L185.176 0H239.176Z" stroke="url(#paint0_linear_y)" />
-    <!-- Second identical path -->
-    <path class="hero_letter-path" d="M103.176 0L169.176 125.5V318.5H115.176V125.5L49.1763 0H103.176ZM239.176 0L173.176 125.5V318.5H119.176V125.5L185.176 0H239.176Z" stroke="url(#paint1_linear_y)" />
-    <defs>
-      <linearGradient id="paint0_linear_y" x1="120" y1="0" x2="120" y2="318.5" gradientUnits="userSpaceOnUse">
-        <stop stop-color="var(--letter-start-color)" />
-        <stop offset="1" stop-color="var(--letter-end-color)" />
-      </linearGradient>
-      <linearGradient id="paint1_linear_y" x1="120" y1="0" x2="120" y2="318.5" gradientUnits="userSpaceOnUse">
-        <stop stop-color="var(--letter-start-color)" />
-        <stop offset="1" stop-color="var(--letter-end-color)" />
-      </linearGradient>
-    </defs>
-  </svg>
+  <!-- Letter Y -->
+  <div class="letter-container">
+    <svg viewBox="0 0 240 319" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="hero_letter-path shadow" d="M103.176 0L169.176 125.5V318.5H115.176V125.5L49.1763 0H103.176ZM239.176 0L173.176 125.5V318.5H119.176V125.5L185.176 0H239.176Z"/>
+      <path class="hero_letter-path front" d="M103.176 0L169.176 125.5V318.5H115.176V125.5L49.1763 0H103.176ZM239.176 0L173.176 125.5V318.5H119.176V125.5L185.176 0H239.176Z"/>
+    </svg>
+  </div>
 </div>
+</body>
+</html>
