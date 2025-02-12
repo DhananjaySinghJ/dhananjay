@@ -1,118 +1,173 @@
 @font-face {
-    font-family: 'CustomFont';
-    src: url(./fonts/PPNeueMachina-Light.woff2) format('woff2');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'CustomFont';
+  src: url(./fonts/PPNeueMachina-Light.woff2) format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
 
 body {
-    background: black;
-    font-family: 'CustomFont', sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+  background: black;
+  font-family: 'CustomFont', sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 .hero_letters {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1vw;
-    padding: 20px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1vw;
+  padding: 20px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.letter-container {
+  position: relative;
+  flex: 1;
+  height: min(30vh, 200px);
+  max-width: calc(min(30vh, 200px) * 0.75);
+}
+
+.letter-container svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Base styles for all letter paths */
+.hero_letters svg path {
+  fill: none;
+  stroke-width: 2;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+}
+
+/* Front letter style */
+.hero_letter-path.front {
+  stroke: #EB4330;
+  filter: drop-shadow(0 0 1px rgba(235, 67, 48, 0.3));
+  animation: drawLetter 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Shadow letter style */
+.hero_letter-path.shadow {
+  stroke: rgba(235, 67, 48, 0.3);
+  transform: translate(15px, 15px);
+  animation: drawLetter 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Drawing animation */
+@keyframes drawLetter {
+  from {
+      stroke-dashoffset: 1000;
+  }
+  to {
+      stroke-dashoffset: 0;
+  }
+}
+
+/* Stagger delays for front letters */
+.letter-container:nth-child(1) .hero_letter-path.front { animation-delay: 0.1s; }
+.letter-container:nth-child(2) .hero_letter-path.front { animation-delay: 0.2s; }
+.letter-container:nth-child(3) .hero_letter-path.front { animation-delay: 0.3s; }
+.letter-container:nth-child(4) .hero_letter-path.front { animation-delay: 0.4s; }
+.letter-container:nth-child(5) .hero_letter-path.front { animation-delay: 0.5s; }
+.letter-container:nth-child(6) .hero_letter-path.front { animation-delay: 0.6s; }
+.letter-container:nth-child(7) .hero_letter-path.front { animation-delay: 0.7s; }
+.letter-container:nth-child(8) .hero_letter-path.front { animation-delay: 0.8s; }
+.letter-container:nth-child(9) .hero_letter-path.front { animation-delay: 0.9s; }
+
+/* Stagger delays for shadow letters */
+.letter-container:nth-child(1) .hero_letter-path.shadow { animation-delay: 0s; }
+.letter-container:nth-child(2) .hero_letter-path.shadow { animation-delay: 0.1s; }
+.letter-container:nth-child(3) .hero_letter-path.shadow { animation-delay: 0.2s; }
+.letter-container:nth-child(4) .hero_letter-path.shadow { animation-delay: 0.3s; }
+.letter-container:nth-child(5) .hero_letter-path.shadow { animation-delay: 0.4s; }
+.letter-container:nth-child(6) .hero_letter-path.shadow { animation-delay: 0.5s; }
+.letter-container:nth-child(7) .hero_letter-path.shadow { animation-delay: 0.6s; }
+.letter-container:nth-child(8) .hero_letter-path.shadow { animation-delay: 0.7s; }
+.letter-container:nth-child(9) .hero_letter-path.shadow { animation-delay: 0.8s; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero_letters {
+      gap: 2vw;
+      padding: 10px;
   }
   
   .letter-container {
-    position: relative;
-    flex: 1;
-    height: min(30vh, 200px);
-    /* Maintain aspect ratio based on original viewBox dimensions */
-    max-width: calc(min(30vh, 200px) * 0.75);
-  }
-  
-  .letter-container svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Preserve aspect ratio while filling container */
-    object-fit: contain;
-  }
-  
-  .hero_letter-path {
-    stroke-width: 2px;
-    vector-effect: non-scaling-stroke; /* Maintain consistent stroke width when scaling */
+      height: min(25vh, 150px);
+      max-width: calc(min(25vh, 150px) * 0.75);
   }
   
   .hero_letter-path.shadow {
-    stroke: #932b1f;
-    /* Make offset responsive to viewport size */
-    transform: translate(15px, 15px);
-    opacity: 0.7;
-  }
-  
-  .hero_letter-path.front {
-    stroke: #EB4330;
-    filter: drop-shadow(0 0 1px rgba(235, 67, 48, 0.3));
-  }
-  
-  @keyframes drawLetter {
-    from {
-      stroke-dashoffset: 1000;
-    }
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-  
-  .hero_letters svg path {
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    fill: none;
-  }
-  
-  .hero_letter-path.shadow { animation: drawLetter 2s forwards; }
-  .hero_letter-path.front { animation: drawLetter 2s forwards 0.1s; }
-  
-  .hero_letters .letter-container:nth-child(2) svg path.shadow { animation-delay: 0.2s; }
-  .hero_letters .letter-container:nth-child(2) svg path.front { animation-delay: 0.3s; }
-  .hero_letters .letter-container:nth-child(3) svg path.shadow { animation-delay: 0.4s; }
-  .hero_letters .letter-container:nth-child(3) svg path.front { animation-delay: 0.5s; }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .hero_letters {
-      gap: 2vw;
-      padding: 10px;
-    }
-    
-    .letter-container {
-      height: min(25vh, 150px);
-      max-width: calc(min(25vh, 150px) * 0.75);
-    }
-    
-    .hero_letter-path.shadow {
       transform: translate(0.8vw, 0.8vw);
-    }
   }
-  
-  @media (max-width: 480px) {
-    .hero_letters {
+}
+
+@media (max-width: 480px) {
+  .hero_letters {
       gap: 3vw;
       padding: 5px;
-    }
-    
-    .letter-container {
+  }
+  
+  .letter-container {
       height: min(20vh, 100px);
       max-width: calc(min(20vh, 100px) * 0.75);
-    }
-    
-    .hero_letter-path.shadow {
-      transform: translate(1vw, 1vw);
-    }
   }
+  
+  .hero_letter-path.shadow {
+      transform: translate(1vw, 1vw);
+  }
+}
+
+.text-container {
+  position: absolute;
+  top: 50vh; /* Positions halfway down the viewport */
+  left: 25vw; /* 5% margin from left */
+  text-align: left;
+}
+
+.name-text {
+  color: #EB4330; /* Matches your SVG color */
+  font-size: 1rem;
+  font-family: 'CustomFont', sans-serif;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .name-text {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .name-text {
+    font-size: 2rem;
+  }
+  .text-container {
+    left: 3vw;
+  }
+}
