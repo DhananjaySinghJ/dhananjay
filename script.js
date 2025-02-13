@@ -48,109 +48,125 @@ document.querySelectorAll('.letter-container').forEach(letter => {
 
 class TextScramble {
   constructor(el) {
-      this.el = el;
-      this.chars = '!<>-_\\/[]{}—=+*^?#________';
-      this.originalText = el.innerText || el.innerText;
-      this.update = this.update.bind(this);
-      this.isLooping = false;
+    this.el = el;
+    this.chars = '!<>-_\\/[]{}—=+*^?#________';
+    this.originalText = el.innerText;
+    this.update = this.update.bind(this);
   }
-  
+
   setText(newText) {
-      const oldText = this.el.innerText;
-      const length = Math.max(oldText.length, newText.length);
-      const promise = new Promise((resolve) => this.resolve = resolve);
-      this.queue = [];
-      
-      for (let i = 0; i < length; i++) {
-          const from = oldText[i] || '';
-          const to = newText[i] || '';
-          const start = Math.floor(Math.random() * 40);
-          const end = start + Math.floor(Math.random() * 40);
-          this.queue.push({ from, to, start, end });
-      }
-      
-      cancelAnimationFrame(this.frameRequest);
-      this.frame = 0;
-      this.update();
-      return promise;
+    const oldText = this.el.innerText || ''; // Ensure it starts empty
+    const length = Math.max(oldText.length, newText.length);
+    const promise = new Promise((resolve) => (this.resolve = resolve));
+    this.queue = [];
+
+    for (let i = 0; i < length; i++) {
+      const from = oldText[i] || '';
+      const to = newText[i] || '';
+      const start = Math.floor(Math.random() * 40);
+      const end = start + Math.floor(Math.random() * 40);
+      this.queue.push({ from, to, start, end });
+    }
+
+    cancelAnimationFrame(this.frameRequest);
+    this.frame = 0;
+    this.el.style.opacity = 1; // Make sure it's visible when animation starts
+    this.update();
+    return promise;
   }
-  
+
   update() {
-      let output = '';
-      let complete = 0;
-      
-      for (let i = 0, n = this.queue.length; i < n; i++) {
-          let { from, to, start, end, char } = this.queue[i];
-          
-          if (this.frame >= end) {
-              complete++;
-              output += to;
-          } else if (this.frame >= start) {
-              if (!char || Math.random() < 0.28) {
-                  char = this.randomChar();
-                  this.queue[i].char = char;
-              }
-              output += char;
-          } else {
-              output += from;
-          }
-      }
-      
-      this.el.innerText = output;
-      
-      if (complete === this.queue.length) {
-          this.resolve();
-          if (this.isLooping) {
-              // Wait for 2 seconds before starting the next loop
-              setTimeout(() => {
-                  this.startLoop();
-              }, 2000);
-          }
+    let output = '';
+    let complete = 0;
+
+    for (let i = 0, n = this.queue.length; i < n; i++) {
+      let { from, to, start, end, char } = this.queue[i];
+      if (this.frame >= end) {
+        complete++;
+        output += to;
+      } else if (this.frame >= start) {
+        if (!char || Math.random() < 0.28) {
+          char = this.randomChar();
+          this.queue[i].char = char;
+        }
+        output += char;
       } else {
-          this.frameRequest = requestAnimationFrame(this.update);
-          this.frame++;
+        output += from;
       }
+    }
+
+    this.el.innerText = output;
+
+    if (complete === this.queue.length) {
+      this.resolve();
+    } else {
+      this.frameRequest = requestAnimationFrame(this.update);
+      this.frame++;
+    }
   }
-  
+
   randomChar() {
-      return this.chars[Math.floor(Math.random() * this.chars.length)];
-  }
-
-  startLoop() {
-      this.isLooping = true;
-      this.setText(this.originalText);
-  }
-
-  stopLoop() {
-      this.isLooping = false;
+    return this.chars[Math.floor(Math.random() * this.chars.length)];
   }
 }
 
-// Initialize and start the looping effect
+// Text elements configuration
 const textElements = {
   name: {
-      element: document.querySelector('.name-text'),
-      text: 'Dhananjay Singh'
+    element: document.querySelector('.name-text'),
+    text: 'Dhananjay Singh',
   },
   profession: {
-      element: document.querySelector('.profession-text'),
-      text: 'AI Specialist'
+    element: document.querySelector('.profession-text'),
+    text: 'AI Specialist',
   },
   description: {
-      element: document.querySelector('.description-text'),
-      text: 'FullStack Developer'
-  }
+    element: document.querySelector('.description-text'),
+    text: 'FullStack Developer',
+  },
+  freelance: {
+    element: document.querySelector('.freelance-text'),
+    text: 'Freelance Developer',
+  },
+  scrolldown: {
+    element: document.querySelector('.scrolldown-text'),
+    text: 'Scroll Down',
+  },
 };
 
-// Initialize scramble effect for each element
-Object.values(textElements).forEach(({ element, text }) => {
+// Initialize TextScramble instances & hide text
+const fxInstances = {};
+Object.entries(textElements).forEach(([key, { element, text }]) => {
   if (element) {
-      const fx = new TextScramble(element);
-      // Store original text
-      element.originalText = text;
-      // Start loop with delay based on index
-      setTimeout(() => {
-          fx.startLoop();
-      }, 500); // Add slight delay between elements
+    element.innerText = ''; // Ensure text is empty at start
+    element.style.opacity = 0; // Hide text until animation starts
+    const fx = new TextScramble(element);
+    fx.originalText = text;
+    fxInstances[key] = fx;
   }
+});
+
+// Animation sequence control
+const animationOrder = ['name', 'profession', 'description', 'freelance', 'scrolldown'];
+
+async function runSequentialAnimation() {
+  while (true) {
+    for (const key of animationOrder) {
+      const fx = fxInstances[key];
+      if (!fx) continue;
+
+      // Animate text in
+      await fx.setText(fx.originalText);
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Display duration
+      
+      // Animate text out
+      await fx.setText('');
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Pause between elements
+    }
+  }
+}
+
+// Start the animation sequence after page loads
+document.addEventListener('DOMContentLoaded', () => {
+  runSequentialAnimation();
 });

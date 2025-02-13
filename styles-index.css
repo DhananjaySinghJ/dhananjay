@@ -132,12 +132,11 @@ body {
 .text-container {
   position: absolute;
   top: 50vh; /* Positions halfway down the viewport */
-  left: 25vw; /* 5% margin from left */
+  left: 25vw; 
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
   text-align: left;
-  width: 60vw;
+  width: auto;
 }
 
 .name-text {
@@ -162,7 +161,7 @@ body {
   animation: fadeInUp 0.8s ease forwards 0.3s;
 }
 
-.right-text {
+.right-text-container {
   position: absolute;
   top: 50vh; /* Positions halfway down the viewport */
   left: 60vw; 
@@ -170,7 +169,7 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   text-align: left;
-  width: 60vw;
+  width: auto;
 }
 
 .description-text {
@@ -180,6 +179,47 @@ body {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.8s ease forwards 0.4s;
+  margin: 0;
+}
+
+.top-left-text-container {
+  position: absolute;
+  top: 30vh;
+  left: 20vw; 
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  text-align: left;
+  width: auto;
+}
+
+.freelance-text {
+  color: #EB4330;
+  font-size: 1rem;
+  font-family: 'CustomFont', sans-serif;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards 0.4s;
+  margin: 0;
+}
+
+.bottom-left-text-container {
+  position: absolute;
+  top: 73vh; /* Positions halfway down the viewport */
+  right: 5vw; 
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  width: auto;
+}
+
+.scrolldown-text {
+  color: #EB4330; /* Matches your SVG color */
+  font-size: 1rem;
+  font-family: 'CustomFont', sans-serif;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards;
   margin: 0;
 }
 
