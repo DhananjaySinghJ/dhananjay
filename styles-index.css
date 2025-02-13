@@ -52,14 +52,14 @@ body {
 
 /* Front letter style */
 .hero_letter-path.front {
-  stroke: #EB4330;
-  filter: drop-shadow(0 0 1px rgba(235, 67, 48, 0.3));
+  stroke: rgba(255, 255, 255, 0.15); /* Very light white */
+  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.1));
   animation: drawLetter 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* Shadow letter style */
 .hero_letter-path.shadow {
-  stroke: rgba(235, 67, 48, 0.3);
+  stroke: rgba(255, 255, 255, 0.1); /* Even lighter white for shadow */
   transform: translate(15px, 15px);
   animation: drawLetter 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }

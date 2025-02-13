@@ -135,6 +135,10 @@ const textElements = {
   profession: {
       element: document.querySelector('.profession-text'),
       text: 'AI Specialist'
+  },
+  description: {
+      element: document.querySelector('.description-text'),
+      text: 'FullStack Developer'
   }
 };
 
