@@ -133,7 +133,11 @@ body {
   position: absolute;
   top: 50vh; /* Positions halfway down the viewport */
   left: 25vw; /* 5% margin from left */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   text-align: left;
+  width: 60vw;
 }
 
 .name-text {
@@ -143,6 +147,40 @@ body {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.8s ease forwards;
+  margin: 0;
+}
+
+.profession-text {
+  color: #EB4330;
+  font-size: 1rem;
+  font-family: 'CustomFont', sans-serif;
+  opacity: 0;
+  position: absolute;
+  left: 5vw;
+  top: calc(100% + 0);
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards 0.3s;
+}
+
+.right-text {
+  position: absolute;
+  top: 50vh; /* Positions halfway down the viewport */
+  left: 60vw; 
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  text-align: left;
+  width: 60vw;
+}
+
+.description-text {
+  color: #EB4330;
+  font-size: 1rem;
+  font-family: 'CustomFont', sans-serif;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards 0.4s;
+  margin: 0;
 }
 
 @keyframes fadeInUp {
