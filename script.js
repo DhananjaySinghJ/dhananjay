@@ -153,7 +153,6 @@ async function runSequentialAnimation() {
     }
   }
 }
-// ...existing code...
 
 // Combined menu button functionality
 const menuBtn = document.getElementById('menuBtn');
@@ -195,6 +194,19 @@ if (menuBtn) {
 // Start the animation sequence after page loads
 document.addEventListener('DOMContentLoaded', () => {
   runSequentialAnimation();
+});
+
+// Add this after your document load event
+document.addEventListener('DOMContentLoaded', () => {
+  // Get all SVG paths
+  const paths = document.querySelectorAll('.hero_letter-path');
+  
+  // Calculate and set the correct dash values for each path
+  paths.forEach(path => {
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = length;
+    path.style.strokeDashoffset = length;
+  });
 });
 
 // Navbar animation

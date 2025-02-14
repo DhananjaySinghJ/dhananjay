@@ -46,15 +46,15 @@ body {
 .hero_letters svg path {
   fill: none;
   stroke-width: 2;
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
+  /* stroke-dasharray: 1000;
+  stroke-dashoffset: 1000; */
 }
 
 /* Front letter style */
 .hero_letter-path.front {
   stroke: rgba(255, 255, 255, 0.15); /* Very light white */
   filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.1));
-  animation: drawLetter 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: drawLetter 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* Shadow letter style */
@@ -72,9 +72,6 @@ body {
 
 /* Drawing animation */
 @keyframes drawLetter {
-  from {
-      stroke-dashoffset: 1000;
-  }
   to {
       stroke-dashoffset: 0;
   }
