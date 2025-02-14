@@ -209,21 +209,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Navbar animation
-// Get necessary elements
-// const menuBtn = document.getElementById('menuBtn');
-// const navLinks = document.getElementById('navLinks');
-
-// // Toggle menu state
-// menuBtn.addEventListener('click', () => {
-//   menuBtn.classList.toggle('active');
-//   navLinks.classList.toggle('active');
-// });
-
-// // Close menu when clicking outside
-// document.addEventListener('click', (e) => {
-//   if (!menuBtn.contains(e.target) && !navLinks.contains(e.target)) {
-//     menuBtn.classList.remove('active');
-//     navLinks.classList.remove('active');
-//   }
-// }); 
+document.addEventListener('DOMContentLoaded', () => {
+  const video = document.querySelector('.video-container video');
+  const unmuteButton = document.createElement('button');
+  
+  // Create and style unmute button
+  unmuteButton.innerHTML = 'Unmute';
+  unmuteButton.classList.add('unmute-btn');
+  document.querySelector('.video-container').appendChild(unmuteButton);
+  
+  // Toggle mute/unmute
+  unmuteButton.addEventListener('click', () => {
+    video.muted = !video.muted;
+    unmuteButton.innerHTML = video.muted ? '🔇 Unmute' : '🔊 Mute';
+  });
+});

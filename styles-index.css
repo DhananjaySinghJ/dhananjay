@@ -46,8 +46,6 @@ body {
 .hero_letters svg path {
   fill: none;
   stroke-width: 2;
-  /* stroke-dasharray: 1000;
-  stroke-dashoffset: 1000; */
 }
 
 /* Front letter style */
@@ -376,5 +374,51 @@ body {
 @media (max-width: 768px) {
   .nav-container {
     padding: 0 20px;
+  }
+}
+
+.video-container {
+  position: fixed; /* or absolute, depending on your needs */
+  top: 15%; /* Adjust these values */
+  left: 85%;
+  transform: translate(-50%, -50%);
+  width: 20%; /* Percentage of viewport width */
+  max-width: 1200px; /* Maximum width */
+  z-index: 10;
+}
+
+.video-container video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9; /* Maintain aspect ratio */
+  border-radius: 8px; /* Optional: rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: add shadow */
+  opacity: 0.5;
+}
+
+.unmute-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 11;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.unmute-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .video-container {
+    width: 90%;
+    top: 60%;
   }
 }
