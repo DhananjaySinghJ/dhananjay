@@ -25,25 +25,6 @@ gsap.from('.letter-container', {
   ease: 'power3.out'
 });
 
-// Add hover effect
-document.querySelectorAll('.letter-container').forEach(letter => {
-  letter.addEventListener('mouseenter', () => {
-    gsap.to(letter, {
-      rotateY: 180,
-      duration: 0.5,
-      ease: 'power2.inOut'
-    });
-  });
-  
-  letter.addEventListener('mouseleave', () => {
-    gsap.to(letter, {
-      rotateY: 0,
-      duration: 0.5,
-      ease: 'power2.inOut'
-    });
-  });
-});
-
 // Scramble text
 
 class TextScramble {
@@ -112,6 +93,10 @@ class TextScramble {
 
 // Text elements configuration
 const textElements = {
+  menu: {
+    element: document.querySelector('#menuBtn'),
+    text: 'MENU'
+  },
   name: {
     element: document.querySelector('.name-text'),
     text: 'Dhananjay Singh',
@@ -139,7 +124,10 @@ const fxInstances = {};
 Object.entries(textElements).forEach(([key, { element, text }]) => {
   if (element) {
     element.innerText = ''; // Ensure text is empty at start
-    element.style.opacity = 0; // Hide text until animation starts
+    // Only set opacity to 0 for non-menu elements
+    if (key !== 'menu') {
+      element.style.opacity = 0;
+    }
     const fx = new TextScramble(element);
     fx.originalText = text;
     fxInstances[key] = fx;
@@ -157,16 +145,73 @@ async function runSequentialAnimation() {
 
       // Animate text in
       await fx.setText(fx.originalText);
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Display duration
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Display duration
       
       // Animate text out
       await fx.setText('');
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Pause between elements
+      await new Promise((resolve) => setTimeout(resolve, 250)); // Pause between elements
     }
   }
+}
+// ...existing code...
+
+// Combined menu button functionality
+const menuBtn = document.getElementById('menuBtn');
+if (menuBtn) {
+  const menuScramble = new TextScramble(menuBtn);
+  let isScrambling = false;
+  
+  // Hover effects for scramble
+  menuBtn.addEventListener('mouseenter', () => {
+    if (!isScrambling) {
+      isScrambling = true;
+      menuScramble.setText(textElements.menu.text).then(() => {
+        isScrambling = false;
+      });
+    }
+  });
+
+  // Set initial text
+  menuBtn.innerText = textElements.menu.text;
+
+  // Navbar toggle functionality
+  const navLinks = document.getElementById('navLinks');
+
+  // Toggle menu state
+  menuBtn.addEventListener('click', () => {
+    menuBtn.classList.toggle('active');
+    navLinks.classList.toggle('active');
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!menuBtn.contains(e.target) && !navLinks.contains(e.target)) {
+      menuBtn.classList.remove('active');
+      navLinks.classList.remove('active');
+    }
+  });
 }
 
 // Start the animation sequence after page loads
 document.addEventListener('DOMContentLoaded', () => {
   runSequentialAnimation();
 });
+
+// Navbar animation
+// Get necessary elements
+// const menuBtn = document.getElementById('menuBtn');
+// const navLinks = document.getElementById('navLinks');
+
+// // Toggle menu state
+// menuBtn.addEventListener('click', () => {
+//   menuBtn.classList.toggle('active');
+//   navLinks.classList.toggle('active');
+// });
+
+// // Close menu when clicking outside
+// document.addEventListener('click', (e) => {
+//   if (!menuBtn.contains(e.target) && !navLinks.contains(e.target)) {
+//     menuBtn.classList.remove('active');
+//     navLinks.classList.remove('active');
+//   }
+// }); 

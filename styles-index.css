@@ -6,7 +6,7 @@
 }
 
 body {
-  background: black;
+  background: #111;
   font-family: 'CustomFont', sans-serif;
   text-align: center;
   margin: 0;
@@ -64,6 +64,12 @@ body {
   animation: drawLetter 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
+/* Base animation for all letters */
+.hero_letter-path.front,
+.hero_letter-path.shadow {
+  animation: drawLetter 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
 /* Drawing animation */
 @keyframes drawLetter {
   from {
@@ -75,26 +81,26 @@ body {
 }
 
 /* Stagger delays for front letters */
-.letter-container:nth-child(1) .hero_letter-path.front { animation-delay: 0.1s; }
-.letter-container:nth-child(2) .hero_letter-path.front { animation-delay: 0.2s; }
-.letter-container:nth-child(3) .hero_letter-path.front { animation-delay: 0.3s; }
-.letter-container:nth-child(4) .hero_letter-path.front { animation-delay: 0.4s; }
-.letter-container:nth-child(5) .hero_letter-path.front { animation-delay: 0.5s; }
-.letter-container:nth-child(6) .hero_letter-path.front { animation-delay: 0.6s; }
-.letter-container:nth-child(7) .hero_letter-path.front { animation-delay: 0.7s; }
-.letter-container:nth-child(8) .hero_letter-path.front { animation-delay: 0.8s; }
-.letter-container:nth-child(9) .hero_letter-path.front { animation-delay: 0.9s; }
+.letter-container:nth-child(1) .hero_letter-path.front { animation-delay: 3.1s; }
+.letter-container:nth-child(2) .hero_letter-path.front { animation-delay: 3.2s; }
+.letter-container:nth-child(3) .hero_letter-path.front { animation-delay: 3.3s; }
+.letter-container:nth-child(4) .hero_letter-path.front { animation-delay: 3.4s; }
+.letter-container:nth-child(5) .hero_letter-path.front { animation-delay: 3.5s; }
+.letter-container:nth-child(6) .hero_letter-path.front { animation-delay: 3.6s; }
+.letter-container:nth-child(7) .hero_letter-path.front { animation-delay: 3.7s; }
+.letter-container:nth-child(8) .hero_letter-path.front { animation-delay: 3.8s; }
+.letter-container:nth-child(9) .hero_letter-path.front { animation-delay: 3.9s; }
 
 /* Stagger delays for shadow letters */
-.letter-container:nth-child(1) .hero_letter-path.shadow { animation-delay: 0s; }
-.letter-container:nth-child(2) .hero_letter-path.shadow { animation-delay: 0.1s; }
-.letter-container:nth-child(3) .hero_letter-path.shadow { animation-delay: 0.2s; }
-.letter-container:nth-child(4) .hero_letter-path.shadow { animation-delay: 0.3s; }
-.letter-container:nth-child(5) .hero_letter-path.shadow { animation-delay: 0.4s; }
-.letter-container:nth-child(6) .hero_letter-path.shadow { animation-delay: 0.5s; }
-.letter-container:nth-child(7) .hero_letter-path.shadow { animation-delay: 0.6s; }
-.letter-container:nth-child(8) .hero_letter-path.shadow { animation-delay: 0.7s; }
-.letter-container:nth-child(9) .hero_letter-path.shadow { animation-delay: 0.8s; }
+.letter-container:nth-child(1) .hero_letter-path.shadow { animation-delay: 3s; }
+.letter-container:nth-child(2) .hero_letter-path.shadow { animation-delay: 3.1s; }
+.letter-container:nth-child(3) .hero_letter-path.shadow { animation-delay: 3.2s; }
+.letter-container:nth-child(4) .hero_letter-path.shadow { animation-delay: 3.3s; }
+.letter-container:nth-child(5) .hero_letter-path.shadow { animation-delay: 3.4s; }
+.letter-container:nth-child(6) .hero_letter-path.shadow { animation-delay: 3.5s; }
+.letter-container:nth-child(7) .hero_letter-path.shadow { animation-delay: 3.6s; }
+.letter-container:nth-child(8) .hero_letter-path.shadow { animation-delay: 3.7s; }
+.letter-container:nth-child(9) .hero_letter-path.shadow { animation-delay: 3.8s; }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -247,5 +253,131 @@ body {
   }
   .text-container {
     left: 3vw;
+  }
+}
+
+:root {
+  --nav-height: 60px;
+  --nav-background: #111;
+  --btn-padding: 8px 16px;
+  --primary-red: #EB4330;;
+  --btn-white: #FFFFFF;
+}
+
+.main-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--nav-height);
+  background: var(--nav-background);
+  z-index: 1000;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 40px;
+  height: 100%;
+}
+
+/* Common Button Styles */
+.nav-btn {
+  display: inline-block;
+  padding: var(--btn-padding);
+  border-radius: 50px;
+  font-family: 'CustomFont',sans-serif;
+  font-size: 12px;
+  color: black;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+/* Menu Button */
+.menu-btn {
+  background: #EB4330;
+  color: black;
+  z-index: 2;
+  padding-left: 8px;
+  padding-right: 10px;
+  padding-bottom: 6px;
+  padding-top: 6px;
+  opacity: 0;
+  animation: fadeInMenu 0.3s ease forwards;
+  animation-delay: 9s;
+}
+
+/* Add this new animation */
+@keyframes fadeInMenu {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.menu-btn:hover {
+  background: white;
+  color: black;
+}
+
+.menu-btn.active {
+  background: #EB4330;
+  color: black;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  gap: 12px;
+  margin-left: 20px;
+}
+
+.nav-links .nav-btn {
+  background: var(--btn-white);
+  color: black;
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.nav-links.active .nav-btn {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Sequential animation delays for each link */
+.nav-links .nav-btn:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.nav-links .nav-btn:nth-child(2) {
+  transition-delay: 0.2s;
+}
+
+.nav-links .nav-btn:nth-child(3) {
+  transition-delay: 0.3s;
+}
+
+.nav-links .nav-btn:hover {
+  background: #f0f0f0;
+}
+
+.nav-container {
+  padding-top: 15px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0 20px;
   }
 }
