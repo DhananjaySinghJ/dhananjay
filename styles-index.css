@@ -134,13 +134,13 @@ body {
   background: #f0f0f0;
 }
 
-/* Hero Letters Section */
+/* Hero Letters */
 .hero_letters {
   display: flex;
-  align-items: center;
+  align-items: flex-end; /* Change from center to flex-end to align to bottom */
   justify-content: center;
   gap: 1vw;
-  padding: 20px;
+  padding: 0 20px; /* Remove bottom padding, keep horizontal padding */
   position: fixed;
   bottom: 0;
   left: 0;
