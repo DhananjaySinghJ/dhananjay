@@ -221,6 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Toggle mute/unmute
   unmuteButton.addEventListener('click', () => {
     video.muted = !video.muted;
-    unmuteButton.innerHTML = video.muted ? '🔇 Unmute' : '🔊 Mute';
+    unmuteButton.innerHTML = video.muted ? 'Unmute' : 'Mute';
   });
 });
