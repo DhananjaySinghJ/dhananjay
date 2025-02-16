@@ -15,7 +15,7 @@
   --letter-shadow-offset-large: 15px;
   --letter-shadow-offset-medium: 0.8vw;
   --letter-shadow-offset-small: 1vw;
-  --base-font-size: 1.2rem;
+  --base-font-size: 1.1rem;
 }
 
 /* Base Styles */
@@ -133,7 +133,7 @@ body {
 .nav-links .nav-btn:nth-child(3) { transition-delay: 0.3s; }
 
 .nav-links .nav-btn:hover {
-  background: #f0f0f0;
+  background: #EB4330;
 }
 
 /* Hero Letters */
