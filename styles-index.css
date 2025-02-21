@@ -52,7 +52,7 @@ body {
 
 /* Navigation Styles */
 .main-nav {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -136,6 +136,13 @@ body {
   background: #EB4330;
 }
 
+.hero-section {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
 /* Hero Letters */
 .hero_letters {
   display: flex;
@@ -143,7 +150,7 @@ body {
   justify-content: center;
   gap: 1vw;
   padding: 0 20px; /* Remove bottom padding, keep horizontal padding */
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -279,7 +286,7 @@ body {
 
 /* Video Container */
 .video-container {
-  position: fixed;
+  position: absolute;
   top: 15%;
   left: 85%;
   transform: translate(-50%, -50%);
@@ -465,4 +472,26 @@ body {
     padding: 6px 12px; /* Match nav-btn mobile padding */
     font-size: 10px; /* Match nav-btn mobile font-size */
   }
+}
+
+.about-section {
+  min-height: 100vh;
+  width: 100%;
+  background: var(--background-color);
+  padding: 80px 20px;
+  position: absolute;
+  top: 100vh;  /* Position it after the hero section */
+}
+
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.section-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: white;
+  opacity: 1; /* Make sure text is visible */
 }
